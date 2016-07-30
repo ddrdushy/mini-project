@@ -2,10 +2,11 @@
   "name": "miniproject",
   "version": "1.0.0",
   "private": true,
-  "engines" : {
-    "node":"4.4.3"
+  "engines": {
+    "node": "4.4.3"
   },
   "devDependencies": {
-    "jake": "^8.0.12"
+    "jake": "^8.0.12",
+    "semver": "^5.1.0"
   }
 }
