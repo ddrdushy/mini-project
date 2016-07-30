@@ -5,6 +5,7 @@
 (function(){
     "use strict";
 
+    var semver=require("semver");
 
     desc("Default Task");
     task("default",["Version"],function(){
@@ -16,12 +17,12 @@
         console.log("Checking Version");
 
         var packageJson=require("./package.json");
-        var expected_version="v4.4.3";
-        var actual_version=packageJson.engines.node;
+        var expected_version=packageJson.engines.node;
+        var actual_version=process.version;
 
-        if(actual_version!==expected_version)
-            fail("Incorrect Node version. Expected "+expected_version+ "but Actual "+actual_version);
-        console.log(process.version);
+        if(semver.neq(expected_version,actual_version))
+            fail("Incorrect Node version. Expected "+expected_version+ " but Actual "+actual_version);
+        
     });
 
 }());
