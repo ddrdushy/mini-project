@@ -6,6 +6,7 @@
     "node": "4.4.3"
   },
   "devDependencies": {
+    "bootstrap": "^3.3.7",
     "jake": "^8.0.12",
     "semver": "^5.1.0"
   }
