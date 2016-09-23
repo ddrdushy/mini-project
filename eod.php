@@ -14,7 +14,7 @@ $user_list=array();
 $newuserarray=array();
 
 
-  for($x=0;$x<5;$x+=30){
+  for($x=0;$x<$user_count;$x+=30){
       $result=file_get_contents("https://api.gitter.im/v1/rooms/".$ini_array["CAMPSITE_ID"]."/users?access_token=".$ini_array["API_KEY"]."&skip=".$x);
       echo $x."\n";
       $user_list[]=json_decode($result);

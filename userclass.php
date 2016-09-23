@@ -9,7 +9,7 @@
     var $points;
     var $rank;
 
-    function _construct($id,$uname,$img,$name){
+    function __construct($id,$uname,$img,$name){
       echo "i am in\n";
       $this->id=$id;
       $this->uname=$uname;
@@ -17,17 +17,20 @@
       $this->img=$img;
       $this->fccurl="https://www.freecodecamp.com/".$uname;
       $this->apiurl="https://www.freecodecamp.com/api/users/about?username=".$uname;
-      $this->points=$this->pointsFetcher();
+      $this->points = self::pointsFetcher();
       echo "i am out\n";
     }
 
     function pointsFetcher(){
+      try{
       $result=file_get_contents($this->apiurl);
       $object = json_decode($result);
-      try{
-        return $object[0]->browniePoints;
-      }catch(Exception $e){
+      echo "got the data\n";
+      if(property_exists($object, "about"))
+         return empty($object->about->browniePoints) ? 0 : $object->about->browniePoints;
+      else
         return 0;
+      }catch(Exception $e){
       }
     }
   }
