@@ -16,7 +16,7 @@
       $this->name=$name;
       $this->img=$img;
       $this->fccurl="https://www.freecodecamp.com/".$uname;
-      $this->apiurl="https://www.freecodecamp.com/api/users/about?username=".$uname;
+      $this->apiurl="https://www.freecodecamp.com/api/users/about?username=".strtolower($uname);
       $this->points = self::pointsFetcher();
       echo "i am out\n";
     }

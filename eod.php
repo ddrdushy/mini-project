@@ -29,7 +29,19 @@ $newuserarray=array();
   }
 
   $user_list_count=count($newuserarray);
-  print_r ($newuserarray);
+
   //echo $newuserarray[0]->name;
+  function cmp($a, $b)
+  {
+      if ($a->points == $b->points) {
+        return 0;
+    }
+    return ($a->points > $b->points) ? -1 : 1;
+  }
+
+  usort($newuserarray,"cmp");
+  print_r($newuserarray);
+  echo "\n".$newuserarray[0]->points;
+
 
 ?>
