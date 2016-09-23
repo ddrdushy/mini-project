@@ -1,3 +1,5 @@
+<?php include("userclass.php"); ?>
+
 <?php
 // Parse without sections
 $ini_array = parse_ini_file("configure.ini");
@@ -16,6 +18,7 @@ $user_list=array();
       $user_list[]=json_decode($result);
   }
 
+  
   $user_list_count=count($user_list[0]);
 
   echo $user_list_count;
