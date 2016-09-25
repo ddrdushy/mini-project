@@ -39,7 +39,7 @@ $ini_array = parse_ini_file("configure.ini");
     $user_list[]=new user($row["uid"],$row["uname"],$row["name"]);
    }
 
-   print_r($user_list);
+   //print_r($user_list);
    //data inserted
 
    //sort the data based on th points

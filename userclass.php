@@ -6,7 +6,6 @@
     var $fccurl;
     var $apiurl;
     var $points;
-    var $rank;
 
     function __construct($id,$uname,$name){
       echo "i am in\n";
