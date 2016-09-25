@@ -36,10 +36,24 @@ $ini_array = parse_ini_file("configure.ini");
 
   //insert the fetched data to the array
   while($row = mysqli_fetch_array($res, MYSQL_ASSOC)) {
-    $user_list[]=new user($row->uid,$row->uname,$row->name);
+    $user_list[]=new user($row["uid"],$row["uname"],$row["name"]);
    }
 
+   print_r($user_list);
+   //data inserted
 
+   //sort the data based on th points
+
+   function cmp($a, $b)
+   {
+       if ($a->points == $b->points) {
+         return 0;
+     }
+     return ($a->points > $b->points) ? -1 : 1;
+   }
+
+   usort($user_list,"cmp");
+   print_r($user_list);
 
 /*
 
