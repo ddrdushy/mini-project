@@ -55,6 +55,13 @@ $ini_array = parse_ini_file("configure.ini");
    usort($user_list,"cmp");
    print_r($user_list);
 
+   for($i=0;$i<count($user_list);$i++){
+     $qry="INSERT INTO `daily_update`(`r_date`, `uid`, `points`, `rank`) VALUES ('". date("Y-m-d") ."','".$user_list[$i]->id."',".$user_list[$i]->points.",".($i+1).")";
+     echo $qry."\n";
+     $res=mysqli_query($link,$qry) or die (mysqli_error($link));
+     echo $res."\n";
+   }
+
 /*
 
 $newuserarray=array();
