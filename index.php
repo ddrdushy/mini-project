@@ -38,7 +38,8 @@ if (!$link) {
         height:500px;
       }
       body{
-        background-image:url("img/bg.jpg");
+        background-image:url("img/bg2.jpg");
+        color: #fff;
       }
     </style>
 
@@ -53,7 +54,7 @@ if (!$link) {
         </div>
         <ul class="nav navbar-nav">
           <li class="active"><a href="#">Home</a></li>
-          <li><a href="#">User List</a></li>
+          <li><a href="userlist.php">User List</a></li>
           <li><a href="#">Live View</a></li>
           <li><a href="#">Activity Report</a></li>
         </ul>
