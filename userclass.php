@@ -3,18 +3,16 @@
     var $id;
     var $uname;
     var $name;
-    var $img;
     var $fccurl;
     var $apiurl;
     var $points;
     var $rank;
 
-    function __construct($id,$uname,$img,$name){
+    function __construct($id,$uname,$name){
       echo "i am in\n";
       $this->id=$id;
       $this->uname=$uname;
       $this->name=$name;
-      $this->img=$img;
       $this->fccurl="https://www.freecodecamp.com/".$uname;
       $this->apiurl="https://www.freecodecamp.com/api/users/about?username=".strtolower($uname);
       $this->points = self::pointsFetcher();
