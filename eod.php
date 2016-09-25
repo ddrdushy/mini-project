@@ -54,14 +54,18 @@ $ini_array = parse_ini_file("configure.ini");
 
    usort($user_list,"cmp");
    print_r($user_list);
-
+   $total_points=0;
+   //data insertion to the table
    for($i=0;$i<count($user_list);$i++){
-     $qry="INSERT INTO `daily_update`(`r_date`, `uid`, `points`, `rank`) VALUES ('". date("Y-m-d") ."','".$user_list[$i]->id."',".$user_list[$i]->points.",".($i+1).")";
-     echo $qry."\n";
-     $res=mysqli_query($link,$qry) or die (mysqli_error($link));
-     echo $res."\n";
+     $total_points += $user_list[$i]->points;
+     //$qry="INSERT INTO `daily_update`(`r_date`, `uid`, `points`, `rank`) VALUES ('". date("Y-m-d") ."','".$user_list[$i]->id."',".$user_list[$i]->points.",".($i+1).")";
+     //echo $qry."\n";
+     //$res=mysqli_query($link,$qry) or die (mysqli_error($link));
+     //echo $res."\n";
    }
-
+   $qry="INSERT INTO `daily_count`(`u_date`, `pts_count`, `u_count`) VALUES ('". date("Y-m-d") ."',". $total_points.",".count($user_list).")";
+   $res=mysqli_query($link,$qry) or die (mysqli_error($link));
+   echo $total_points;
 /*
 
 $newuserarray=array();
