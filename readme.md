@@ -13,9 +13,9 @@
   * ~~insert the data to the daily_update table~~
 
 ##Frontend tasks
-  * create navigation bar
-  * Index page with carousel
-  * rank the user list in a separate page and add it to the navigation
+  * ~~create navigation bar~~
+  * ~~Index page with carousel~~
+  * ~~rank the user list in a separate page and add it to the navigation~~
   * Create Live update page for view the live View
   * create a page for each user information view
   * create a page for user exclude
