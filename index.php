@@ -55,8 +55,11 @@ if (!$link) {
         <ul class="nav navbar-nav">
           <li class="active"><a href="#">Home</a></li>
           <li><a href="userlist.php">User List</a></li>
-          <li><a href="#">Live View</a></li>
-          <li><a href="#">Activity Report</a></li>
+          <li><a href="http://fcc-status.herokuapp.com" target="_blank">Live View</a></li>
+          <li><a href="userprofile.php">User Profile</a></li>
+          <li><a href="userexcluder.php">User Excluder</a></li>
+          <li><a href="activity.php">Activity Report</a></li>
+          <li><a href="message.php">Message to Campsite</a></li>
         </ul>
       </div>
     </nav>
@@ -77,7 +80,8 @@ if (!$link) {
       <!-- Wrapper for slides -->
       <div class="carousel-inner" role="listbox">
       <?php
-      $qry="SELECT * FROM `daily_count`";
+      $qry="SELECT * FROM `daily_count` where `u_date`='".date('Y-m-d',strtotime("-1 days"))."'";
+      //echo $qry;
       $qry2=mysqli_query($link,$qry) or die (mysqli_error($link));
       while($row = mysqli_fetch_array($qry2, MYSQL_ASSOC)) {
             $pts=$row['pts_count'];
@@ -98,7 +102,8 @@ if (!$link) {
                     </div>
                 </div>";
 
-      $qry="SELECT `user`.`name`,`user`.`url`,`daily_update`.`points` FROM `daily_update`,`user` WHERE `user`.`uid`=`daily_update`.`uid` and `daily_update`.`r_date`='2016-09-25' limit 3";
+      $qry="SELECT `user`.`name`,`user`.`url`,`daily_update`.`points` FROM `daily_update`,`user` WHERE `user`.`uid`=`daily_update`.`uid` and `daily_update`.`r_date`='".date('Y-m-d',strtotime("-1 days"))."' ORDER BY `daily_update`.`points` DESC limit 3";
+      //echo $qry;
       $qry2=mysqli_query($link,$qry) or die (mysqli_error($link));
       $count=0;
        while($row = mysqli_fetch_array($qry2, MYSQL_ASSOC)) {
@@ -161,8 +166,7 @@ if (!$link) {
         <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
         <span class="sr-only">Next</span>
       </a>
-        </div>
-          </div>
+      </div>
     <!--carousel end -->
 
   </body>
