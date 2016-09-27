@@ -4,7 +4,7 @@ $link = mysqli_connect('localhost','root','','mini');
 if (!$link) {
   die('Could not connect to MySQL: ' . mysql_error());
 }
-$qry="SELECT `user`.`name`,`user`.`uname`,`user`.`url`,`daily_update`.`points`,`daily_update`.`rank` FROM `daily_update`,`user` WHERE `user`.`uid`=`daily_update`.`uid` and `daily_update`.`r_date`='2016-09-25'";
+$qry="SELECT `user`.`name`,`user`.`uname`,`user`.`url`,`daily_update`.`points`,`daily_update`.`rank` FROM `daily_update`,`user` WHERE `user`.`uid`=`daily_update`.`uid` and `daily_update`.`r_date`='".date('Y-m-d',strtotime("-1 days"))."' ORDER BY `daily_update`.`points` DESC";
 $qry2=mysqli_query($link,$qry) or die (mysqli_error($link));
  ?>
 
@@ -45,7 +45,7 @@ $qry2=mysqli_query($link,$qry) or die (mysqli_error($link));
         <ul class="nav navbar-nav">
           <li><a href="index.php">Home</a></li>
           <li class="active"><a href="#">User List</a></li>
-          <li><a href="#">Live View</a></li>
+          <li><a href="http://fcc-status.herokuapp.com" target="_blank">Live View</a></li>
           <li><a href="#">Activity Report</a></li>
         </ul>
       </div>
@@ -79,7 +79,7 @@ $qry2=mysqli_query($link,$qry) or die (mysqli_error($link));
 
                   echo "<tr>
                       <td><h2>#".$rank."</h2></td>
-                      <td><img src=\"".$url."\" width=\"50px\" height=\"50px\"/>
+                      <td><img src=\"".$url."\" width=\"75px\" height=\"75px\"/>
                       </td>
                       <td><h2>".$name."</h2></td>
                       <td><h2>".$points."</h2></td>
