@@ -4,7 +4,7 @@ $link = mysqli_connect('localhost','root','','mini');
 if (!$link) {
   die('Could not connect to MySQL: ' . mysql_error());
 }
-$qry="SELECT `user`.`name`,`user`.`uname`,`user`.`url`,`daily_update`.`points`,`daily_update`.`rank` FROM `daily_update`,`user` WHERE `user`.`uid`=`daily_update`.`uid` and `daily_update`.`r_date`='".date('Y-m-d',strtotime("-1 days"))."' ORDER BY `daily_update`.`points` DESC";
+$qry="SELECT `user`.`uid`,`user`.`name`,`user`.`uname`,`user`.`url`,`daily_update`.`points`,`daily_update`.`rank` FROM `daily_update`,`user` WHERE `user`.`uid`=`daily_update`.`uid` and `daily_update`.`r_date`='".date('Y-m-d',strtotime("-1 days"))."' ORDER BY `daily_update`.`points` DESC";
 $qry2=mysqli_query($link,$qry) or die (mysqli_error($link));
  ?>
 
@@ -67,12 +67,12 @@ $qry2=mysqli_query($link,$qry) or die (mysqli_error($link));
     <div class="container-fluid">
       <div class="row">
         <div class="col-lg-12 ">
-          <table class="table table-bordered text-center">
+          <table class="table table-hover text-center">
             <tr>
                 <th class="text-center"><h3>Rank</h3></th>
                 <th colspan="2" class="text-center"><h3>Name</h3></th>
                 <th class="text-center"><h3>points</h3></th>
-                <th class="text-center"><h3>link to FCC</h3></th>
+                <th class="text-center" colspan="2"><h3>link to FCC</h3></th>
             </tr>
                 <?php
                 while($row = mysqli_fetch_array($qry2, MYSQL_ASSOC)) {
@@ -81,13 +81,27 @@ $qry2=mysqli_query($link,$qry) or die (mysqli_error($link));
                       $points=$row['points'];
                       $rank=$row['rank'];
                       $uname=$row['uname'];
+                      $uid=$row['uid'];
+
+                      $qry3="SELECT `rank` FROM `daily_update` WHERE `uid`='".$uid."' and `r_date`='".date('Y-m-d',strtotime("-1 days"))."'";
+                      $qry4=mysqli_query($link,$qry3) or die (mysqli_error($link));
+                      while($row2 = mysqli_fetch_array($qry4, MYSQL_ASSOC)) {
+                        $rank_old= $row2['rank'];
+                      }
+
+                      if($rank>$rank_old)
+                        $img="img/up.png";
+                      else if($rank<$rank_old)
+                        $img="img/down.png";
+                      else
+                        $img="img/equal.png";
 
                       echo "<tr>
                           <td><h2>#".$rank."</h2></td>
-                          <td><img src=\"".$url."\" width=\"75px\" height=\"75px\"/>
-                          </td>
+                          <td><img src=\"".$url."\" width=\"75px\" height=\"75px\"/></td>
                           <td><h2>".$name."</h2></td>
                           <td><h2>".$points."</h2></td>
+                          <td><img src=\"".$img."\" width=\"75px\" height=\"75px\"/></td>
                           <td><h2><a href=\"https://www.freecodecamp.com/".$uname."\" target=\"_blank\">".$uname."</a></h2></td>
                       </tr>";
                 }
