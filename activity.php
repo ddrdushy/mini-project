@@ -9,7 +9,7 @@ $pts= array();
 $ucount= array();
 while($row = mysqli_fetch_array($qry2, MYSQL_ASSOC)) {
       $pts[]=$row['u_date'];
-      $ucount[]=$row['u_count'];
+      $ucount[]=$row['pts_count'];
 }
 
 function js_str($s)
@@ -54,7 +54,7 @@ function js_array($array)
         </nav>
         <!--navigation menu end-->
 
-       <div id="myDiv" style="width: 100%; height: 100%;"><!-- Plotly chart will be drawn inside this DIV --></div>
+       <div id="myDiv" style="width: 100%; height: 75%;"><!-- Plotly chart will be drawn inside this DIV --></div>
     </body>
 
     <script>
