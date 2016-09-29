@@ -162,7 +162,6 @@ $ini_array= parse_ini_file("configure.ini");
        $res=mysqli_query($link,$qry) or die (mysqli_error($link));
   }
 
-
 /*
 
 $newuserarray=array();
