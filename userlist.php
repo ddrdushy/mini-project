@@ -43,14 +43,19 @@ $qry2=mysqli_query($link,$qry) or die (mysqli_error($link));
           <a class="navbar-brand" href="#">FCC Status Viewer</a>
         </div>
         <ul class="nav navbar-nav">
-          <li><a href="index.php">Home</a></li>
-          <li class="active"><a href="#">User List</a></li>
+          <li><a href="#">Home</a></li>
+          <li class="active"><a href="userlist.php">User List</a></li>
           <li><a href="http://fcc-status.herokuapp.com" target="_blank">Live View</a></li>
-          <li><a href="#">Activity Report</a></li>
+          <li><a href="userprofile.php">User Profile</a></li>
+          <li><a href="userexcluder.php">User Excluder</a></li>
+          <li><a href="activity.php">Activity Report</a></li>
+          <li><a href="message.php">Message to Campsite</a></li>
         </ul>
       </div>
     </nav>
     <!--navigation menu end-->
+
+
     <div class="container-fluid">
         <div class="row">
           <div class="col-lg-12 text-center">
@@ -69,24 +74,24 @@ $qry2=mysqli_query($link,$qry) or die (mysqli_error($link));
                 <th class="text-center"><h3>points</h3></th>
                 <th class="text-center"><h3>link to FCC</h3></th>
             </tr>
-            <?php
-            while($row = mysqli_fetch_array($qry2, MYSQL_ASSOC)) {
-                  $name=$row['name'];
-                  $url=$row['url'];
-                  $points=$row['points'];
-                  $rank=$row['rank'];
-                  $uname=$row['uname'];
+                <?php
+                while($row = mysqli_fetch_array($qry2, MYSQL_ASSOC)) {
+                      $name=$row['name'];
+                      $url=$row['url'];
+                      $points=$row['points'];
+                      $rank=$row['rank'];
+                      $uname=$row['uname'];
 
-                  echo "<tr>
-                      <td><h2>#".$rank."</h2></td>
-                      <td><img src=\"".$url."\" width=\"75px\" height=\"75px\"/>
-                      </td>
-                      <td><h2>".$name."</h2></td>
-                      <td><h2>".$points."</h2></td>
-                      <td><h2><a href=\"https://www.freecodecamp.com/".$uname."\" target=\"_blank\">".$uname."</a></h2></td>
-                  </tr>";
-            }
-            ?>
+                      echo "<tr>
+                          <td><h2>#".$rank."</h2></td>
+                          <td><img src=\"".$url."\" width=\"75px\" height=\"75px\"/>
+                          </td>
+                          <td><h2>".$name."</h2></td>
+                          <td><h2>".$points."</h2></td>
+                          <td><h2><a href=\"https://www.freecodecamp.com/".$uname."\" target=\"_blank\">".$uname."</a></h2></td>
+                      </tr>";
+                }
+                ?>
           </table>
         </div>
       </div>
