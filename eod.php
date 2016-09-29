@@ -54,6 +54,7 @@ $ini_array= parse_ini_file("configure.ini");
    usort($user_list,"cmp");
    print_r($user_list);
    $total_points=0;
+/*
    //data insertion to the table
    for($i=0;$i<count($user_list);$i++){
      $total_points += $user_list[$i]->points;
@@ -61,12 +62,19 @@ $ini_array= parse_ini_file("configure.ini");
      //echo $qry."\n";
      $res=mysqli_query($link,$qry) or die (mysqli_error($link));
      //echo $res."\n";
-   }
+   }*/
 
+   $total_points=addUserData($user_list);
+
+   dailyUpdate($total_points,count($user_list));
    //daily update table is updated
+   /*
    $qry="INSERT INTO `daily_count`(`u_date`, `pts_count`, `u_count`) VALUES ('". date("Y-m-d") ."',". $total_points.",".count($user_list).")";
    $res=mysqli_query($link,$qry) or die (mysqli_error($link));
    echo $total_points;
+*/
+
+
 
    //userUpdate function()
   function userUpdate($user_count){
@@ -106,6 +114,52 @@ $ini_array= parse_ini_file("configure.ini");
                echo $res."\n";
              }
          }
+  }
+
+  function addUserData($user_list){
+    $total_points=0;
+    $link = mysqli_connect('localhost','root','','mini');
+      if (!$link) {
+        die('Could not connect to MySQL: ' . mysql_error());
+      }
+
+    $qry="SELECT `r_date` FROM `daily_update` WHERE `r_date`='". date("Y-m-d") ."'";
+    $flag=mysqli_query($link,$qry) or die (mysqli_error($link));
+
+    //data insertion to the table
+    for($i=0;$i<count($user_list);$i++){
+      $total_points += $user_list[$i]->points;
+      if(!$flag){
+        $qry="INSERT INTO `daily_update`(`r_date`, `uid`, `points`, `rank`) VALUES ('". date("Y-m-d") ."','".$user_list[$i]->id."',".$user_list[$i]->points.",".($i+1).")";
+      }else{
+        $qry="UPDATE `daily_update` SET  `points`=".$user_list[$i]->points.", `rank`=".($i+1)." WHERE `uid`='".$user_list[$i]->id."' AND `r_date`='". date("Y-m-d") ."'";
+      }
+      echo $qry."\n";
+      $res=mysqli_query($link,$qry) or die (mysqli_error($link));
+      //echo $res."\n";
+    }
+    return $total_points;
+  }
+
+  function dailyUpdate($total_points,$user_count){
+
+    $link = mysqli_connect('localhost','root','','mini');
+      if (!$link) {
+        die('Could not connect to MySQL: ' . mysql_error());
+      }
+
+      $qry="SELECT `u_date` FROM `daily_count` WHERE `u_date`='". date("Y-m-d") ."'";
+      $flag=mysqli_query($link,$qry) or die (mysqli_error($link));
+
+
+       if(!$flag){
+         $qry="INSERT INTO `daily_count`(`u_date`, `pts_count`, `u_count`) VALUES ('". date("Y-m-d") ."',". $total_points.",".$user_count.")";
+         echo $qry."\n";
+       }else{
+         $qry ="UPDATE `daily_count` SET `pts_count`='".$total_points."', `u_count`=".$user_count." WHERE `u_date`='". date("Y-m-d") ."'";
+         echo $qry."\n";
+       }
+       $res=mysqli_query($link,$qry) or die (mysqli_error($link));
   }
 
 
