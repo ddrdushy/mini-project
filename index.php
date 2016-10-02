@@ -34,8 +34,8 @@ if (!$link) {
       .cont{
         padding-top: 100px;
       }
-      #carousel{
-        height:100%;
+      .carousel-inner{
+        height:75%;
       }
       body{
         background-image:url("img/bg2.jpg");
