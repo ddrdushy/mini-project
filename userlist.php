@@ -4,7 +4,7 @@ $link = mysqli_connect('localhost','root','','mini');
 if (!$link) {
   die('Could not connect to MySQL: ' . mysql_error());
 }
-$qry="SELECT `user`.`uid`,`user`.`name`,`user`.`uname`,`user`.`url`,`daily_update`.`points`,`daily_update`.`rank` FROM `daily_update`,`user` WHERE `user`.`uid`=`daily_update`.`uid` and `daily_update`.`r_date`='".date('Y-m-d',strtotime("-1 days"))."' ORDER BY `daily_update`.`points` DESC";
+$qry="SELECT `user`.`uid`,`user`.`name`,`user`.`uname`,`user`.`url`,`daily_update`.`points`,`daily_update`.`rank` FROM `daily_update`,`user` WHERE `user`.`uid`=`daily_update`.`uid` and `daily_update`.`r_date`='".date('Y-m-d')."' ORDER BY `daily_update`.`points` DESC";
 $qry2=mysqli_query($link,$qry) or die (mysqli_error($link));
  ?>
 
@@ -88,6 +88,9 @@ $qry2=mysqli_query($link,$qry) or die (mysqli_error($link));
                       while($row2 = mysqli_fetch_array($qry4, MYSQL_ASSOC)) {
                         $rank_old= $row2['rank'];
                       }
+                      echo $rank_old."\n";
+                      if($rank_old==null or !$rank_old)
+                        $rank_old=0;
 
                       if($rank>$rank_old)
                         $img="img/up.png";
@@ -97,7 +100,7 @@ $qry2=mysqli_query($link,$qry) or die (mysqli_error($link));
                         $img="img/equal.png";
 
                       echo "<tr>
-                          <td><h2>#".$rank."</h2></td>
+                          <td><h2>#".$rank."\t#".$rank_old."</h2></td>
                           <td><img src=\"".$url."\" width=\"75px\" height=\"75px\"/></td>
                           <td><h2>".$name."</h2></td>
                           <td><h2>".$points."</h2></td>
