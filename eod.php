@@ -44,7 +44,8 @@ $ini_array= parse_ini_file("configure.ini");
 
 
 
-  userUpdate($user_count);
+  $temp=userUpdate($user_count);
+  var_dump($temp);
 //user updation in table is finished
 //select the users from user table and add them to the user class
   $qry="SELECT * FROM `user` WHERE `excluder`='N'";
@@ -92,11 +93,11 @@ $ini_array= parse_ini_file("configure.ini");
   function userUpdate($user_count){
         $ini_array= parse_ini_file("configure.ini");
 
-        $link = mysqli_connect('localhost','root','','mini');
+        /*$link = mysqli_connect('localhost','root','','mini');
           if (!$link) {
             die('Could not connect to MySQL: ' . mysql_error());
           }
-
+*/
 
         $user_list_new=array();
         //array for user list
@@ -118,11 +119,15 @@ $ini_array= parse_ini_file("configure.ini");
                echo $x."\n";
                $user_list_new[]=json_decode($result);
            }
+
+           $abc=array();
          //user updation and insertion
          for($x=0;$x<count($user_list_new);$x++){
              for($y=0;$y<count($user_list_new[$x]);$y++){
+               $abc[]=$user_list_new[$x][$y];
                $qry="SELECT count(*) FROM `user` WHERE `uid`='".$user_list_new[$x][$y]->id."'";
-               $res=mysqli_query($link,$qry) or die (mysqli_error($link));
+               /*$res=mysqli_query($link,$qry) or die (mysqli_error($link));
+
                while($row = mysqli_fetch_array($res, MYSQL_ASSOC)) {
                    $dbcount=$row["count(*)"];
                 }
@@ -133,10 +138,13 @@ $ini_array= parse_ini_file("configure.ini");
                      $qry ="UPDATE `user` SET `url`='".$user_list_new[$x][$y]->avatarUrlMedium."' WHERE `uid`='".$user_list_new[$x][$y]->id."'";
                      echo $qry."\n";
                    }
-               $res=mysqli_query($link,$qry) or die (mysqli_error($link));
-               //echo $qry."\n";
+               $res=mysqli_query($link,$qry) or die (mysqli_error($link));*/
+               echo $qry."\n";
+
              }
          }
+          //var_dump($abc);
+          return $abc;
   }
   function addUserData($user_list){
     $total_points=0;
