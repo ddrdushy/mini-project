@@ -45,7 +45,7 @@ $ini_array= parse_ini_file("configure.ini");
 
 
   $temp=userUpdate($user_count);
-  var_dump($temp);
+  /*//var_dump($temp);
 //user updation in table is finished
 //select the users from user table and add them to the user class
   $qry="SELECT * FROM `user` WHERE `excluder`='N'";
@@ -55,7 +55,13 @@ $ini_array= parse_ini_file("configure.ini");
   //insert the fetched data to the array
   while($row = mysqli_fetch_array($res, MYSQL_ASSOC)) {
     $user_list[]=new user($row["uid"],$row["uname"],$row["name"]);
-   }
+  }*/
+    $user_list=array();
+    //var_dump($temp[0]);
+    for($i=0;$i<count($temp);$i++){
+      $user_list[]=new user($temp[$i]->id,$temp[$i]->username,$temp[$i]->displayName);
+    }
+
    //print_r($user_list);
    //data inserted
    //sort the data based on th points
