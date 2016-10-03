@@ -14,7 +14,8 @@
       $this->name=$name;
       $this->fccurl="https://www.freecodecamp.com/".$uname;
       $this->apiurl="https://www.freecodecamp.com/api/users/about?username=".strtolower($uname);
-      $this->points ;//= self::pointsFetcher();
+      $this->points = self::pointsFetcher();
+      echo $this->points."\n";
       echo "i am out\n";
     }
 
@@ -39,13 +40,15 @@
       curl_close($ch);
 
       // Will dump a beauty json :3
-      var_dump(json_decode($object, true));
-
-      if(property_exists($object, "about"))
-         return empty($object->about->browniePoints) ? 0 : $object->about->browniePoints;
+      $object=json_decode($object, true);
+      //var_dump($object["about"]->browniePoints);
+      if(isset($object["about"]["browniePoints"]))
+        return $object["about"]["browniePoints"];
       else
         return 0;
+
       }catch(Exception $e){
+        
       }
     }
   }
