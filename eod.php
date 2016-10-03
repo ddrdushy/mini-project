@@ -2,9 +2,27 @@
 include("userclass.php");
 // Parse without sections
 $ini_array= parse_ini_file("configure.ini");
-//echo $ini_array["CAMPSITE_ID"]."\n";
+  //echo $ini_array["CAMPSITE_ID"]."\n";
+
   //get the user count from gitter room
-  $result=file_get_contents("https://api.gitter.im/v1/rooms?access_token=".$ini_array["API_KEY"]);
+  $url="https://api.gitter.im/v1/rooms?access_token=".$ini_array["API_KEY"];
+
+  //  Initiate curl
+  $ch = curl_init();
+  // Disable SSL verification
+  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+  // Will return the response, if false it print the response
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+  // Set the url
+  curl_setopt($ch, CURLOPT_URL,$url);
+  // Execute
+  $result=curl_exec($ch);
+  // Closing
+  curl_close($ch);
+
+  // Will dump a beauty json :3
+  var_dump(json_decode($result, true));
+
   $object = json_decode($result);
   $user_count=$object[3]->userCount;
   echo $object[3]->userCount."\n";
