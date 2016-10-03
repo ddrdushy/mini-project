@@ -83,24 +83,23 @@ $qry2=mysqli_query($link,$qry) or die (mysqli_error($link));
                       $uname=$row['uname'];
                       $uid=$row['uid'];
 
-                      $qry3="SELECT `rank` FROM `daily_update` WHERE `uid`='".$uid."' and `r_date`='".date('Y-m-d',strtotime("-1 days"))."'";
+                      $qry3="SELECT `points` FROM `daily_update` WHERE `uid`='".$uid."' and `r_date`='".date('Y-m-d',strtotime("-1 days"))."'";
                       $qry4=mysqli_query($link,$qry3) or die (mysqli_error($link));
                       while($row2 = mysqli_fetch_array($qry4, MYSQL_ASSOC)) {
-                        $rank_old= $row2['rank'];
+                        $rank_old= $row2['points'];
                       }
-                      echo $rank_old."\n";
                       if($rank_old==null or !$rank_old)
                         $rank_old=0;
 
-                      if($rank>$rank_old)
+                      if($points>$rank_old)
                         $img="img/up.png";
-                      else if($rank<$rank_old)
+                      else if($points<$rank_old)
                         $img="img/down.png";
                       else
                         $img="img/equal.png";
 
                       echo "<tr>
-                          <td><h2>#".$rank."\t#".$rank_old."</h2></td>
+                          <td><h2>#".$rank."</h2></td>
                           <td><img src=\"".$url."\" width=\"75px\" height=\"75px\"/></td>
                           <td><h2>".$name."</h2></td>
                           <td><h2>".$points."</h2></td>
