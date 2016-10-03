@@ -152,12 +152,14 @@ $ini_array= parse_ini_file("configure.ini");
           //var_dump($abc);
           return $abc;
   }
+
+
   function addUserData($user_list){
     $total_points=0;
-    $link = mysqli_connect('localhost','root','','mini');
+    /*$link = mysqli_connect('localhost','root','','mini');
       if (!$link) {
         die('Could not connect to MySQL: ' . mysql_error());
-      }
+      }*/
     //data insertion to the table
     for($i=0;$i<count($user_list);$i++){
       $total_points += $user_list[$i]->points;
@@ -178,6 +180,7 @@ $ini_array= parse_ini_file("configure.ini");
     }
     return $total_points;
   }
+  
   function dailyUpdate($total_points,$user_count){
     $link = mysqli_connect('localhost','root','','mini');
       if (!$link) {
