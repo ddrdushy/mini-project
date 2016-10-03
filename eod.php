@@ -28,7 +28,7 @@ $ini_array= parse_ini_file("configure.ini");
   echo $object[3]->userCount."\n";
   //got the user count in $user_count variable
 
-  
+  /*
   //get the user count from table
   $link = mysqli_connect('localhost','root','','mini');
   if (!$link) {
@@ -39,7 +39,7 @@ $ini_array= parse_ini_file("configure.ini");
   while($row = mysqli_fetch_array($res, MYSQL_ASSOC)) {
       $dbcount=$row["count(*)"];
    }
-  print_r($dbcount);
+  print_r($dbcount);*/
 
 
 
@@ -85,17 +85,36 @@ $ini_array= parse_ini_file("configure.ini");
    $res=mysqli_query($link,$qry) or die (mysqli_error($link));
    echo $total_points;
 */
+
+
+
    //userUpdate function()
   function userUpdate($user_count){
         $ini_array= parse_ini_file("configure.ini");
+
         $link = mysqli_connect('localhost','root','','mini');
           if (!$link) {
             die('Could not connect to MySQL: ' . mysql_error());
           }
+
+
         $user_list_new=array();
         //array for user list
            for($x=0;$x<$user_count;$x+=30){
-               $result=file_get_contents("https://api.gitter.im/v1/rooms/".$ini_array["CAMPSITE_ID"]."/users?access_token=".$ini_array["API_KEY"]."&skip=".$x);
+               $url="https://api.gitter.im/v1/rooms/".$ini_array["CAMPSITE_ID"]."/users?access_token=".$ini_array["API_KEY"]."&skip=".$x;
+
+               //  Initiate curl
+               $ch = curl_init();
+               // Disable SSL verification
+               curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+               // Will return the response, if false it print the response
+               curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+               // Set the url
+               curl_setopt($ch, CURLOPT_URL,$url);
+               // Execute
+               $result=curl_exec($ch);
+               // Closing
+               curl_close($ch);
                echo $x."\n";
                $user_list_new[]=json_decode($result);
            }
