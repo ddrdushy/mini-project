@@ -20,15 +20,13 @@ $ini_array= parse_ini_file("configure.ini");
   // Closing
   curl_close($ch);
 
-  // Will dump a beauty json :3
-  var_dump(json_decode($result, true));
 
   $object = json_decode($result);
   $user_count=$object[3]->userCount;
   echo $object[3]->userCount."\n";
   //got the user count in $user_count variable
 
-  /*
+
   //get the user count from table
   $link = mysqli_connect('localhost','root','','mini');
   if (!$link) {
@@ -39,13 +37,13 @@ $ini_array= parse_ini_file("configure.ini");
   while($row = mysqli_fetch_array($res, MYSQL_ASSOC)) {
       $dbcount=$row["count(*)"];
    }
-  print_r($dbcount);*/
+  print_r($dbcount);
 
 
 
 
-  $temp=userUpdate($user_count);
-  /*//var_dump($temp);
+  userUpdate($user_count);
+  //var_dump($temp);
 //user updation in table is finished
 //select the users from user table and add them to the user class
   $qry="SELECT * FROM `user` WHERE `excluder`='N'";
@@ -55,14 +53,10 @@ $ini_array= parse_ini_file("configure.ini");
   //insert the fetched data to the array
   while($row = mysqli_fetch_array($res, MYSQL_ASSOC)) {
     $user_list[]=new user($row["uid"],$row["uname"],$row["name"]);
-  }*/
-    $user_list=array();
+  }
     //var_dump($temp[0]);
-    for($i=0;$i<count($temp);$i++){
-      $user_list[]=new user($temp[$i]->id,$temp[$i]->username,$temp[$i]->displayName);
-    }
 
-   //print_r($user_list);
+   print_r($user_list);
    //data inserted
    //sort the data based on th points
    function cmp($a, $b)
@@ -75,7 +69,7 @@ $ini_array= parse_ini_file("configure.ini");
    usort($user_list,"cmp");
    print_r($user_list);
    $total_points=0;
-/*
+
    //data insertion to the table
    for($i=0;$i<count($user_list);$i++){
      $total_points += $user_list[$i]->points;
@@ -83,15 +77,15 @@ $ini_array= parse_ini_file("configure.ini");
      //echo $qry."\n";
      $res=mysqli_query($link,$qry) or die (mysqli_error($link));
      //echo $res."\n";
-   }*/
+   }
    $total_points=addUserData($user_list);
    dailyUpdate($total_points,count($user_list));
    //daily update table is updated
-   /*
-   $qry="INSERT INTO `daily_count`(`u_date`, `pts_count`, `u_count`) VALUES ('". date("Y-m-d") ."',". $total_points.",".count($user_list).")";
-   $res=mysqli_query($link,$qry) or die (mysqli_error($link));
+
+   /*$qry="INSERT INTO `daily_count`(`u_date`, `pts_count`, `u_count`) VALUES ('". date("Y-m-d") ."',". $total_points.",".count($user_list).")";
+   $res=mysqli_query($link,$qry) or die (mysqli_error($link));*/
    echo $total_points;
-*/
+
 
 
 
@@ -99,11 +93,11 @@ $ini_array= parse_ini_file("configure.ini");
   function userUpdate($user_count){
         $ini_array= parse_ini_file("configure.ini");
 
-        /*$link = mysqli_connect('localhost','root','','mini');
+        $link = mysqli_connect('localhost','root','','mini');
           if (!$link) {
             die('Could not connect to MySQL: ' . mysql_error());
           }
-*/
+
 
         $user_list_new=array();
         //array for user list
@@ -126,13 +120,12 @@ $ini_array= parse_ini_file("configure.ini");
                $user_list_new[]=json_decode($result);
            }
 
-           $abc=array();
          //user updation and insertion
          for($x=0;$x<count($user_list_new);$x++){
              for($y=0;$y<count($user_list_new[$x]);$y++){
                $abc[]=$user_list_new[$x][$y];
                $qry="SELECT count(*) FROM `user` WHERE `uid`='".$user_list_new[$x][$y]->id."'";
-               /*$res=mysqli_query($link,$qry) or die (mysqli_error($link));
+               $res=mysqli_query($link,$qry) or die (mysqli_error($link));
 
                while($row = mysqli_fetch_array($res, MYSQL_ASSOC)) {
                    $dbcount=$row["count(*)"];
@@ -144,22 +137,20 @@ $ini_array= parse_ini_file("configure.ini");
                      $qry ="UPDATE `user` SET `url`='".$user_list_new[$x][$y]->avatarUrlMedium."' WHERE `uid`='".$user_list_new[$x][$y]->id."'";
                      echo $qry."\n";
                    }
-               $res=mysqli_query($link,$qry) or die (mysqli_error($link));*/
+               $res=mysqli_query($link,$qry) or die (mysqli_error($link));
                echo $qry."\n";
 
              }
          }
-          //var_dump($abc);
-          return $abc;
   }
 
 
   function addUserData($user_list){
     $total_points=0;
-    /*$link = mysqli_connect('localhost','root','','mini');
+    $link = mysqli_connect('localhost','root','','mini');
       if (!$link) {
         die('Could not connect to MySQL: ' . mysql_error());
-      }*/
+      }
     //data insertion to the table
     for($i=0;$i<count($user_list);$i++){
       $total_points += $user_list[$i]->points;
@@ -180,7 +171,7 @@ $ini_array= parse_ini_file("configure.ini");
     }
     return $total_points;
   }
-  
+
   function dailyUpdate($total_points,$user_count){
     $link = mysqli_connect('localhost','root','','mini');
       if (!$link) {
