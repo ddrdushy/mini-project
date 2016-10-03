@@ -27,6 +27,8 @@ $ini_array= parse_ini_file("configure.ini");
   $user_count=$object[3]->userCount;
   echo $object[3]->userCount."\n";
   //got the user count in $user_count variable
+
+  
   //get the user count from table
   $link = mysqli_connect('localhost','root','','mini');
   if (!$link) {
@@ -38,6 +40,10 @@ $ini_array= parse_ini_file("configure.ini");
       $dbcount=$row["count(*)"];
    }
   print_r($dbcount);
+
+
+
+
   userUpdate($user_count);
 //user updation in table is finished
 //select the users from user table and add them to the user class
