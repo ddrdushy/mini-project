@@ -46,14 +46,29 @@ $ini_array= parse_ini_file("configure.ini");
 
   //user updation in table is finished
   //select the users from user table and add them to the user class
-  $qry="SELECT * FROM `user` WHERE `excluder`='N'";
-  $res=mysqli_query($link,$qry) or die (mysqli_error($link));
-  //array for user list
-  $user_list=array();
-  //insert the fetched data to the array
-  while($row = mysqli_fetch_array($res, MYSQL_ASSOC)) {
-    $user_list[]=new user($row["uid"],$row["uname"],$row["name"]);
-  }
+    $qry="SELECT * FROM `user` WHERE `excluder`='N'";
+    $res=mysqli_query($link,$qry) or die (mysqli_error($link));
+    //array for user list
+    $user_list=array();
+    //insert the fetched data to the array
+    while($row = mysqli_fetch_array($res, MYSQL_ASSOC)) {
+      $user_list[]=new user($row["uid"],$row["uname"],$row["name"]);
+    }
+
+    $url_list=array();
+    for($i=0;$i<count($user_list);$i++)
+      $url_list=$user_list[i]->apiurl;
+
+    $result = multiRequest($data);
+
+    for($i=0;$i<count($user_list);$i++){
+      $object=json_decode($result[$i], true);
+      if(isset($object["about"]["browniePoints"]))
+        $user_list[i]->points= $object["about"]["browniePoints"];
+      else
+        $user_list[i]->points= 0;
+    }
+
     //var_dump($temp[0]);
 
    print_r($user_list);
@@ -107,9 +122,10 @@ $ini_array= parse_ini_file("configure.ini");
            }
 
         $result=multiRequest($url_array);
+
         for($i=0;$i<count($result);$i++)
             $user_list_new[]=json_decode($result[i]);
-        
+
          //user updation and insertion
          for($x=0;$x<count($user_list_new);$x++){
              for($y=0;$y<count($user_list_new[$x]);$y++){
