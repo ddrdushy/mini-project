@@ -14,8 +14,8 @@
       $this->name=$name;
       $this->fccurl="https://www.freecodecamp.com/".$uname;
       $this->apiurl="https://www.freecodecamp.com/api/users/about?username=".strtolower($uname);
-      $this->points = self::pointsFetcher();
-      echo $this->points."\n";
+      //$this->points = self::pointsFetcher();
+      //echo $this->points."\n";
       echo "i am out\n";
     }
 
@@ -48,7 +48,7 @@
         return 0;
 
       }catch(Exception $e){
-        
+
       }
     }
   }
