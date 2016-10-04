@@ -41,11 +41,11 @@ $ini_array= parse_ini_file("configure.ini");
 
 
 
-
   userUpdate($user_count);
   //var_dump($temp);
-//user updation in table is finished
-//select the users from user table and add them to the user class
+
+  //user updation in table is finished
+  //select the users from user table and add them to the user class
   $qry="SELECT * FROM `user` WHERE `excluder`='N'";
   $res=mysqli_query($link,$qry) or die (mysqli_error($link));
   //array for user list
@@ -98,28 +98,18 @@ $ini_array= parse_ini_file("configure.ini");
             die('Could not connect to MySQL: ' . mysql_error());
           }
 
-
+        $url_array=array();
         $user_list_new=array();
         //array for user list
            for($x=0;$x<$user_count;$x+=30){
                $url="https://api.gitter.im/v1/rooms/".$ini_array["CAMPSITE_ID"]."/users?access_token=".$ini_array["API_KEY"]."&skip=".$x;
-
-               //  Initiate curl
-               $ch = curl_init();
-               // Disable SSL verification
-               curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-               // Will return the response, if false it print the response
-               curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-               // Set the url
-               curl_setopt($ch, CURLOPT_URL,$url);
-               // Execute
-               $result=curl_exec($ch);
-               // Closing
-               curl_close($ch);
-               echo $x."\n";
-               $user_list_new[]=json_decode($result);
+               $url_array[]=$url;
            }
 
+        $result=multiRequest($url_array);
+        for($i=0;$i<count($result);$i++)
+            $user_list_new[]=json_decode($result[i]);
+        
          //user updation and insertion
          for($x=0;$x<count($user_list_new);$x++){
              for($y=0;$y<count($user_list_new[$x]);$y++){
@@ -191,6 +181,62 @@ $ini_array= parse_ini_file("configure.ini");
        }
        $res=mysqli_query($link,$qry) or die (mysqli_error($link));
   }
+
+
+  function multiRequest($data, $options = array()) {
+	  // array of curl handles
+	  $curly = array();
+	  // data to be returned
+	  $result = array();
+	  // multi handle
+	  $mh = curl_multi_init();
+	  // loop through $data and create curl handles
+	  // then add them to the multi-handle
+	  foreach ($data as $id => $d) {
+	    $curly[$id] = curl_init();
+	    $url = (is_array($d) && !empty($d['url'])) ? $d['url'] : $d;
+	    curl_setopt($curly[$id], CURLOPT_URL,            $url);
+	    curl_setopt($curly[$id], CURLOPT_HEADER,         0);
+	    curl_setopt($curly[$id], CURLOPT_RETURNTRANSFER, 1);
+	    // post?
+	    if (is_array($d)) {
+  	      if (!empty($d['post'])) {
+        		curl_setopt($curly[$id], CURLOPT_POST,       1);
+        		curl_setopt($curly[$id], CURLOPT_POSTFIELDS, $d['post']);
+  	      }
+	    }
+	   // extra options?
+	    if (!empty($options)) {
+	      curl_setopt_array($curly[$id], $options);
+	    }
+	    curl_multi_add_handle($mh, $curly[$id]);
+	  }
+	  // execute the handles
+	  $running = null;
+	  do {
+	    curl_multi_exec($mh, $running);
+	  } while($running > 0);
+
+	  // get content and remove handles
+	  foreach($curly as $id => $c) {
+	    $result[$id] = curl_multi_getcontent($c);
+	    curl_multi_remove_handle($mh, $c);
+	  }
+	  // all done
+	  curl_multi_close($mh);
+	  return $result;
+	}
+
+
+
+
+
+
+
+
+
+
+
 /*
 $newuserarray=array();
 $qry="SELECT * FROM `user` WHERE `excluder`='N' ";
