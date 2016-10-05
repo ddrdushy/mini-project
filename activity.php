@@ -32,6 +32,12 @@ function js_array($array)
         <link rel="stylesheet" type="text/css" href="node_modules\bootstrap\dist\css\animate.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="node_modules\bootstrap\dist\js\bootstrap.js"></script>
+        <style>
+          body{
+            background-image:url("img/bg2.jpg");
+            color: #fff;
+          }
+        </style>
     </head>
 
     <body>
