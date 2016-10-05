@@ -139,13 +139,13 @@ $ini_array= parse_ini_file("configure.ini");
                 }
                    if($dbcount==0){
                      $qry="INSERT INTO `user`(`uid`, `name`, `doj`, `uname`, `url`) VALUES ('".$user_list_new[$x][$y]->id."','".$user_list_new[$x][$y]->displayName."','". date("Y-m-d") ."','".$user_list_new[$x][$y]->username."','".$user_list_new[$x][$y]->avatarUrlMedium."')";
-                     echo $qry."\n";
+                     //echo $qry."\n";
                    }else{
                      $qry ="UPDATE `user` SET `url`='".$user_list_new[$x][$y]->avatarUrlMedium."' WHERE `uid`='".$user_list_new[$x][$y]->id."'";
-                     echo $qry."\n";
+                     //echo $qry."\n";
                    }
                $res=mysqli_query($link,$qry) or die (mysqli_error($link));
-               echo $qry."\n";
+               //echo $qry."\n";
 
              }
          }
@@ -161,7 +161,7 @@ $ini_array= parse_ini_file("configure.ini");
     //data insertion to the table
     for($i=0;$i<count($user_list);$i++){
       $total_points += $user_list[$i]->points;
-      echo date("Y-m-d")."\n";
+      //echo date("Y-m-d")."\n";
       $qry="SELECT count(*) FROM `daily_update` WHERE `r_date`='". date("Y-m-d") ."' AND `uid`='".$user_list[$i]->id."'";
       $flag=mysqli_query($link,$qry) or die (mysqli_error($link));
       while($row = mysqli_fetch_array($flag, MYSQL_ASSOC)) {
@@ -233,14 +233,15 @@ $ini_array= parse_ini_file("configure.ini");
 	  }
 	  // execute the handles
 	  $running = null;
+    $count=0;
 	  do {
+      echo $count++."\n";
 	    curl_multi_exec($mh, $running);
 	  } while($running > 0);
 
 	  // get content and remove handles
 	  foreach($curly as $id => $c) {
 	    $result[$id] = curl_multi_getcontent($c);
-      echo $c."\n";
 	    curl_multi_remove_handle($mh, $c);
 	  }
 	  // all done
