@@ -53,8 +53,11 @@ function js_array($array)
           </div>
         </nav>
         <!--navigation menu end-->
-
-       <div id="myDiv" style="width: 100%; height: 75%;"><!-- Plotly chart will be drawn inside this DIV --></div>
+       <div class="col-lg-12 text-center">
+         <h1><span class="label label-lg label-success">Daily Activity Report</span></h1>
+       </div>
+     </br>     </br>     </br>     </br>
+       <div id="myDiv"><!-- Plotly chart will be drawn inside this DIV --></div>
     </body>
 
     <script>
