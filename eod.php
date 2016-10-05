@@ -57,16 +57,17 @@ $ini_array= parse_ini_file("configure.ini");
 
     $url_list=array();
     for($i=0;$i<count($user_list);$i++)
-      $url_list=$user_list[i]->apiurl;
+      $url_list[]=$user_list[$i]->apiurl;
 
-    $result = multiRequest($data);
-
+    //var_dump($url_list);
+    $result = multiRequest($url_list);
+    //var_dump($result);
     for($i=0;$i<count($user_list);$i++){
       $object=json_decode($result[$i], true);
       if(isset($object["about"]["browniePoints"]))
-        $user_list[i]->points= $object["about"]["browniePoints"];
+        $user_list[$i]->points= $object["about"]["browniePoints"];
       else
-        $user_list[i]->points= 0;
+        $user_list[$i]->points= 0;
     }
 
     //var_dump($temp[0]);
@@ -93,14 +94,14 @@ $ini_array= parse_ini_file("configure.ini");
      $res=mysqli_query($link,$qry) or die (mysqli_error($link));
      //echo $res."\n";
    }*/
-   $total_points=addUserData($user_list);
-   dailyUpdate($total_points,count($user_list));
+    $total_points=addUserData($user_list);
+    dailyUpdate($total_points,count($user_list));
    //daily update table is updated
 
    /*$qry="INSERT INTO `daily_count`(`u_date`, `pts_count`, `u_count`) VALUES ('". date("Y-m-d") ."',". $total_points.",".count($user_list).")";
    $res=mysqli_query($link,$qry) or die (mysqli_error($link));*/
    echo $total_points;
-
+   echo "done";
 
 
 
@@ -124,7 +125,7 @@ $ini_array= parse_ini_file("configure.ini");
         $result=multiRequest($url_array);
 
         for($i=0;$i<count($result);$i++)
-            $user_list_new[]=json_decode($result[i]);
+            $user_list_new[]=json_decode($result[$i]);
 
          //user updation and insertion
          for($x=0;$x<count($user_list_new);$x++){
@@ -171,7 +172,7 @@ $ini_array= parse_ini_file("configure.ini");
       }else{
         $qry="UPDATE `daily_update` SET  `points`=".$user_list[$i]->points.", `rank`=".($i+1)." WHERE `uid`='".$user_list[$i]->id."' AND `r_date`='". date("Y-m-d") ."'";
       }
-      echo $qry."\n";
+      //echo $qry."\n";
       $res=mysqli_query($link,$qry) or die (mysqli_error($link));
       //echo $res."\n";
     }
@@ -190,12 +191,12 @@ $ini_array= parse_ini_file("configure.ini");
        }
        if($dbcount==0){
          $qry="INSERT INTO `daily_count`(`u_date`, `pts_count`, `u_count`) VALUES ('". date("Y-m-d") ."',". $total_points.",".$user_count.")";
-         echo $qry."\n";
+         //echo $qry."\n";
        }else{
          $qry ="UPDATE `daily_count` SET `pts_count`='".$total_points."', `u_count`=".$user_count." WHERE `u_date`='". date("Y-m-d") ."'";
-         echo $qry."\n";
+         //echo $qry."\n";
        }
-       $res=mysqli_query($link,$qry) or die (mysqli_error($link));
+      $res=mysqli_query($link,$qry) or die (mysqli_error($link));
   }
 
 
@@ -211,13 +212,16 @@ $ini_array= parse_ini_file("configure.ini");
 	  foreach ($data as $id => $d) {
 	    $curly[$id] = curl_init();
 	    $url = (is_array($d) && !empty($d['url'])) ? $d['url'] : $d;
-	    curl_setopt($curly[$id], CURLOPT_URL,            $url);
-	    curl_setopt($curly[$id], CURLOPT_HEADER,         0);
-	    curl_setopt($curly[$id], CURLOPT_RETURNTRANSFER, 1);
+	    curl_setopt($curly[$id], CURLOPT_URL,$url);
+	    curl_setopt($curly[$id], CURLOPT_HEADER,0);
+	    curl_setopt($curly[$id], CURLOPT_RETURNTRANSFER,1);
+      curl_setopt($curly[$id], CURLOPT_SSL_VERIFYPEER,false);
+      // Will return the response, if false it print the response
+      curl_setopt($curly[$id], CURLOPT_RETURNTRANSFER,true);
 	    // post?
 	    if (is_array($d)) {
   	      if (!empty($d['post'])) {
-        		curl_setopt($curly[$id], CURLOPT_POST,       1);
+        		curl_setopt($curly[$id], CURLOPT_POST,1);
         		curl_setopt($curly[$id], CURLOPT_POSTFIELDS, $d['post']);
   	      }
 	    }
@@ -236,6 +240,7 @@ $ini_array= parse_ini_file("configure.ini");
 	  // get content and remove handles
 	  foreach($curly as $id => $c) {
 	    $result[$id] = curl_multi_getcontent($c);
+      echo $c."\n";
 	    curl_multi_remove_handle($mh, $c);
 	  }
 	  // all done
