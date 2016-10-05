@@ -117,7 +117,7 @@
         <br /><br />
         <div class="row">
           <div class="col-lg-5">
-            <img src="<?php echo $url ?>" class="img-thumbnail" width="500px" height="250px"/>
+            <img src="<?php echo $url ?>" class="img-thumbnail" width="450px" height="450px"/>
           </div>
           <div class="col-lg-7 tab">
             <table class="table table-hover">
@@ -181,8 +181,8 @@
     </body>
     <script>
         var trace1 = {
-          x: <?php echo  js_array($pts); ?>,
-          y: <?php echo  js_array($rdate); ?>,
+          x: <?php echo  js_array($rdate); ?>,
+          y: <?php echo  js_array($pts); ?>,
           type: 'scatter'
         };
         var data = [trace1];
