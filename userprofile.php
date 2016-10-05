@@ -51,6 +51,11 @@
       <!--navigation menu end-->
 
       <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12">
+            <h1><span class="label label-lg label-primary col-lg-12">Select the User to view Individual Activity</span></h1>
+          </div>
+        </div>
           <table class="table table-hover">
             <?php
                 $link = mysqli_connect('localhost','root','','mini');
