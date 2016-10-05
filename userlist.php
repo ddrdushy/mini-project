@@ -25,12 +25,14 @@ $qry2=mysqli_query($link,$qry) or die (mysqli_error($link));
         padding-top: 15px;
       }
       a:link{
-        color: #fff;
+        color: #bbd0f7;
       }
       a:visited{
         color: #fff;
       }
-
+      .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+        background-color: #000;
+      }
     </style>
 
   </head>
