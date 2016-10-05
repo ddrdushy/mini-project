@@ -72,7 +72,7 @@ if (!$link) {
             <div class="carousel-inner" role="listbox">
 
                 <?php
-                    $qry="SELECT * FROM `daily_count` where `u_date`='".date('Y-m-d',strtotime("-1 days"))."'";
+                    $qry="SELECT * FROM `daily_count` where `u_date`='".date('Y-m-d')."'";
                     //echo $qry;
                     $qry2=mysqli_query($link,$qry) or die (mysqli_error($link));
 
@@ -96,7 +96,7 @@ if (!$link) {
                                   </div>
                               </div>";
 
-                    $qry="SELECT `user`.`name`,`user`.`url`,`daily_update`.`points` FROM `daily_update`,`user` WHERE `user`.`uid`=`daily_update`.`uid` and `daily_update`.`r_date`='".date('Y-m-d',strtotime("-1 days"))."' ORDER BY `daily_update`.`points` DESC limit 3";
+                    $qry="SELECT `user`.`name`,`user`.`url`,`daily_update`.`points` FROM `daily_update`,`user` WHERE `user`.`uid`=`daily_update`.`uid` and `daily_update`.`r_date`='".date('Y-m-d')."' ORDER BY `daily_update`.`points` DESC limit 3";
                     //echo $qry;
                     $qry2=mysqli_query($link,$qry) or die (mysqli_error($link));
                     $count=0;
