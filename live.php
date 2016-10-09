@@ -44,8 +44,22 @@
           }
         }
 
-    
+    $url_list=array();
+    for($i=0;$i<count($user_list);$i++)
+      $url_list[]=$user_list[$i]->apiurl;
 
+    //var_dump($url_list);
+    $result = multiRequest($url_list);
+
+    for($i=0;$i<count($user_list);$i++){
+      $object=json_decode($result[$i], true);
+      if(isset($object["about"]["browniePoints"]))
+        $user_list[$i]->points= $object["about"]["browniePoints"];
+      else
+        $user_list[$i]->points= 0;
+    }
+
+    
     //sort the data based on th points
     function cmp($a, $b)
     {
