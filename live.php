@@ -40,9 +40,11 @@
 
       for($x=0;$x<count($user_list_new);$x++){
           for($y=0;$y<count($user_list_new[$x]);$y++){
-
+            $user_list[]=new user($user_list_new[$x][$y]->id,$user_list_new[$x][$y]->name,$user_list_new[$x][$y]->displayName);
           }
         }
+
+    
 
     //sort the data based on th points
     function cmp($a, $b)
