@@ -59,6 +59,7 @@
         $user_list[$i]->points= 0;
     }
 
+    usort($user_list,"cmp");
     
     //sort the data based on th points
     function cmp($a, $b)
