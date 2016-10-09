@@ -35,10 +35,10 @@
       <nav class="navbar navbar-inverse">
         <div class="container-fluid">
           <div class="navbar-header">
-            <a class="navbar-brand" href="#">FCC Status Viewer</a>
+            <a class="navbar-brand" href="index.php">FCC Status Viewer</a>
           </div>
           <ul class="nav navbar-nav">
-            <li><a href="#">Home</a></li>
+            <li><a href="index.php">Home</a></li>
             <li><a href="userlist.php">User List</a></li>
             <li><a href="http://fcc-status.herokuapp.com" target="_blank">Live View</a></li>
             <li class="active"><a href="userprofile.php">User Profile</a></li>
