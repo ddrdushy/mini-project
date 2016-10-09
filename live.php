@@ -66,7 +66,7 @@
     for($i=0;$i<count($user_list);$i++){
       $total_points += $user_list[$i]->points;
 
-    
+
     //sort the data based on th points
     function cmp($a, $b)
     {
@@ -125,6 +125,4 @@
     </nav>
     <!--navigation menu end-->
   </body>
-
-
 </html>
