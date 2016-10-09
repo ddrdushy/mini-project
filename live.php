@@ -124,5 +124,48 @@
       </div>
     </nav>
     <!--navigation menu end-->
+
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <h1><span class="label label-primary">FCC Live status Viewer</span></h1>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-6 text-center">
+          <h1><span class="label label-success">Total Points : <?php echo $total_points ?></span></h1>
+        </div>
+        <div class="col-lg-6 text-center">
+          <h1><span class="label label-success">Total Users : <?php echo $user_count ?></span></h1>
+        </div>
+      </div>
+
+      <div class="row"><table class="table table-hover text-center">
+        <tr>
+            <th class="text-center"><h3>Rank</h3></th>
+            <th class="text-center"><h3>Name</h3></th>
+            <th class="text-center"><h3>points</h3></th>
+            <th class="text-center"><h3>link to FCC</h3></th>
+        </tr>
+            <?php
+            for($i=0;$i<count($user_list);$i++){
+              $total_points += $user_list[$i]->points;
+
+                  echo "<tr>
+                      <td><h2>#".($i+1)."</h2></td>
+                      <td><h2>".$user_list[$i]->name."</h2></td>
+                      <td><h2>".$user_list[$i]->points."</h2></td>
+                      <td><h2><a href=\"https://www.freecodecamp.com/".$user_list[$i]->uname."\" target=\"_blank\">".$user_list[$i]->uname."</a></h2></td>
+                  </tr>";
+            }
+            ?>
+          </table>
+
+        <div class="col-lg-12 text-center">
+
+        </div>
+      </div>
+    </div>
   </body>
 </html>
