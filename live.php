@@ -24,6 +24,34 @@
   $object = json_decode($result);
   $user_count=$object[3]->userCount;
   echo $object[3]->userCount."\n";
+
+  $url_array=array();
+  $user_list_new=array();
+  //array for user list
+     for($x=0;$x<$user_count;$x+=30){
+         $url="https://api.gitter.im/v1/rooms/".$ini_array["CAMPSITE_ID"]."/users?access_token=".$ini_array["API_KEY"]."&skip=".$x;
+         $url_array[]=$url;
+     }
+
+  $result=multiRequest($url_array);
+
+  for($i=0;$i<count($result);$i++)
+      $user_list_new[]=json_decode($result[$i]);
+
+      for($x=0;$x<count($user_list_new);$x++){
+          for($y=0;$y<count($user_list_new[$x]);$y++){
+
+          }
+        }
+
+    //sort the data based on th points
+    function cmp($a, $b)
+    {
+        if ($a->points == $b->points) {
+          return 0;
+      }
+      return ($a->points > $b->points) ? -1 : 1;
+    }
 ?>
 <html>
   <head>
