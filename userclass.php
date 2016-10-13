@@ -8,7 +8,7 @@
     var $points;
 
     function __construct($id,$uname,$name){
-      echo "i am in\n";
+      //echo "i am in\n";
       $this->id=$id;
       $this->uname=$uname;
       $this->name=$name;
@@ -16,7 +16,7 @@
       $this->apiurl="https://www.freecodecamp.com/api/users/about?username=".strtolower($uname);
       //$this->points = self::pointsFetcher();
       //echo $this->points."\n";
-      echo "i am out\n";
+      //echo "i am out\n";
     }
 
     function pointsFetcher(){
