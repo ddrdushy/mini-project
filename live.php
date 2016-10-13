@@ -1,4 +1,5 @@
 <?php
+
   include("userclass.php");
   // Parse without sections
   $ini_array= parse_ini_file("configure.ini");
@@ -23,7 +24,7 @@
 
   $object = json_decode($result);
   $user_count=$object[3]->userCount;
-  echo $object[3]->userCount."\n";
+  //echo $object[3]->userCount."\n";
 
   $url_array=array();
   $user_list_new=array();
@@ -34,19 +35,20 @@
      }
 
   $result=multiRequest($url_array);
-
-  for($i=0;$i<count($result);$i++)
-      $user_list_new[]=json_decode($result[$i]);
-
+  for($i=0;$i<count($result);$i++){
+    $user_list_new[]=json_decode($result[$i]);
+  }
+//var_dump($user_list);
       for($x=0;$x<count($user_list_new);$x++){
           for($y=0;$y<count($user_list_new[$x]);$y++){
-            $user_list[]=new user($user_list_new[$x][$y]->id,$user_list_new[$x][$y]->name,$user_list_new[$x][$y]->displayName);
+            $user_list[]=new user($user_list_new[$x][$y]->id,$user_list_new[$x][$y]->username,$user_list_new[$x][$y]->displayName);
           }
         }
 
     $url_list=array();
     for($i=0;$i<count($user_list);$i++)
       $url_list[]=$user_list[$i]->apiurl;
+
 
     //var_dump($url_list);
     $result = multiRequest($url_list);
@@ -60,12 +62,13 @@
     }
 
     usort($user_list,"cmp");
+    //var_dump($user_list);
 
     $total_points=0;
 
     for($i=0;$i<count($user_list);$i++){
       $total_points += $user_list[$i]->points;
-
+    }
 
     //sort the data based on th points
     function cmp($a, $b)
@@ -75,7 +78,9 @@
       }
       return ($a->points > $b->points) ? -1 : 1;
     }
+
 ?>
+
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="node_modules\bootstrap\dist\css\bootstrap.css">
@@ -149,6 +154,7 @@
             <th class="text-center"><h3>link to FCC</h3></th>
         </tr>
             <?php
+
             for($i=0;$i<count($user_list);$i++){
               $total_points += $user_list[$i]->points;
 
@@ -161,11 +167,60 @@
             }
             ?>
           </table>
-
-        <div class="col-lg-12 text-center">
-
-        </div>
       </div>
     </div>
   </body>
 </html>
+<?php
+function multiRequest($data, $options = array()) {
+  // array of curl handles
+  $curly = array();
+  // data to be returned
+  $result = array();
+  // multi handle
+  $mh = curl_multi_init();
+  // loop through $data and create curl handles
+  // then add them to the multi-handle
+  foreach ($data as $id => $d) {
+    $curly[$id] = curl_init();
+    $url = (is_array($d) && !empty($d['url'])) ? $d['url'] : $d;
+    curl_setopt($curly[$id], CURLOPT_URL,$url);
+    curl_setopt($curly[$id], CURLOPT_HEADER,0);
+    curl_setopt($curly[$id], CURLOPT_RETURNTRANSFER,1);
+    curl_setopt($curly[$id], CURLOPT_SSL_VERIFYPEER,false);
+    // Will return the response, if false it print the response
+    curl_setopt($curly[$id], CURLOPT_RETURNTRANSFER,true);
+    // post?
+    if (is_array($d)) {
+        if (!empty($d['post'])) {
+          curl_setopt($curly[$id], CURLOPT_POST,1);
+          curl_setopt($curly[$id], CURLOPT_POSTFIELDS, $d['post']);
+        }
+    }
+   // extra options?
+    if (!empty($options)) {
+      curl_setopt_array($curly[$id], $options);
+    }
+    curl_multi_add_handle($mh, $curly[$id]);
+  }
+  // execute the handles
+  $running = null;
+  $count=0;
+  do {
+    //echo $count++."\n";
+    curl_multi_exec($mh, $running);
+  } while($running > 0);
+
+  // get content and remove handles
+  foreach($curly as $id => $c) {
+    $result[$id] = curl_multi_getcontent($c);
+    curl_multi_remove_handle($mh, $c);
+  }
+  // all done
+  curl_multi_close($mh);
+  return $result;
+}
+
+
+
+ ?>
