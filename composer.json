@@ -1,0 +1,12 @@
+{
+    "name": "ddrdushy/mini_project",
+    "authors": [
+        {
+            "name": "ddrdushy",
+            "email": "dushy2009@gmail.com"
+        }
+    ],
+    "require": {
+      "phploc/phploc": "*"
+    }
+}
