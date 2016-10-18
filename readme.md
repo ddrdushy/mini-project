@@ -1,5 +1,7 @@
 # FreeCodeCamp Status Viewer
 
+[![Build Status](https://drone.io/github.com/ddrdushy/mini-project/status.png)](https://drone.io/github.com/ddrdushy/mini-project/latest)
+
 ##Backend tasks
 
   * ~~get the total user from DB~~
