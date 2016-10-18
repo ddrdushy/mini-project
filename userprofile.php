@@ -4,6 +4,40 @@
       <link rel="stylesheet" type="text/css" href="node_modules\bootstrap\dist\css\animate.css">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
       <script src="node_modules\bootstrap\dist\js\bootstrap.js"></script>
+      <script>
+         $(document).ready(function()
+        {
+        	$('#search').keyup(function()
+        	{
+        		searchTable($(this).val());
+        	});
+        });
+
+        function searchTable(inputVal)
+        {
+        	var table = $('#tblData');
+        	table.find('tr').each(function(index, row)
+        	{
+        		var allCells = $(row).find('td');
+        		if(allCells.length > 0)
+        		{
+        			var found = false;
+        			allCells.each(function(index, td)
+        			{
+        				var regExp = new RegExp(inputVal, 'i');
+        				if(regExp.test($(td).text()))
+        				{
+        					found = true;
+        					return false;
+        				}
+        			});
+        			if(found == true)$(row).show();else $(row).hide();
+        		}
+        	});
+        }
+
+
+      </script>
       <style>
         .img{
           position:absolute;
@@ -53,10 +87,15 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-lg-12">
+              <input type="text" placeholder="Enter the camper Name" class="form form-control" id="search"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
             <h1><span class="label label-lg label-primary col-lg-12">Select the User to view Individual Activity</span></h1>
           </div>
         </div>
-          <table class="table table-hover">
+          <table class="table table-hover" id="tblData">
             <?php
                 $link = mysqli_connect('localhost','root','','mini');
                 if (!$link) {
