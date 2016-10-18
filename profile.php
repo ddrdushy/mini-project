@@ -183,9 +183,19 @@
         var trace1 = {
           x: <?php echo  js_array($rdate); ?>,
           y: <?php echo  js_array($pts); ?>,
-          type: 'scatter'
+          type: 'scatter',
+          mode: 'lines+markers'
         };
         var data = [trace1];
-        Plotly.newPlot('myDiv', data);
+
+        var layout = {
+                    xaxis: {
+                      title: 'Time'
+                    },
+                    yaxis: {
+                      title: 'Points'
+                    }
+                  }
+        Plotly.newPlot('myDiv', data,layout);
     </script>
 </html>

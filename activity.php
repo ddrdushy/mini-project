@@ -70,9 +70,18 @@ function js_array($array)
         var trace1 = {
           x: <?php echo  js_array($pts); ?>,
           y: <?php echo  js_array($ucount); ?>,
-          type: 'scatter'
+          type: 'scatter',
+          mode: 'lines+markers'
         };
         var data = [trace1];
-        Plotly.newPlot('myDiv', data);
+        var layout = {
+                    xaxis: {
+                      title: 'Time'
+                    },
+                    yaxis: {
+                      title: 'Total Points'
+                    }
+                  }
+        Plotly.newPlot('myDiv', data,layout);
     </script>
 </html>
