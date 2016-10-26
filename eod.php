@@ -22,30 +22,20 @@ $ini_array= parse_ini_file("configure.ini");
 
 
   $object = json_decode($result);
-  $user_count=$object[3]->userCount;
-  echo $object[3]->userCount."\n";
+
+  $user_count=$object[2]->userCount;
+  echo $object[2]->userCount."\n";
   //got the user count in $user_count variable
-
-
-  //get the user count from table
-  $link = mysqli_connect('localhost','root','','mini');
-  if (!$link) {
-    die('Could not connect to MySQL: ' . mysql_error());
-  }
-  $qry="SELECT count(*) FROM `user`";
-  $res=mysqli_query($link,$qry) or die (mysqli_error($link));
-  while($row = mysqli_fetch_array($res, MYSQL_ASSOC)) {
-      $dbcount=$row["count(*)"];
-   }
-  print_r($dbcount);
-
-
-
   userUpdate($user_count);
   //var_dump($temp);
 
   //user updation in table is finished
   //select the users from user table and add them to the user class
+  $link = mysqli_connect('localhost','root','','mini');
+    if (!$link) {
+      die('Could not connect to MySQL: ' . mysql_error());
+    }
+
     $qry="SELECT * FROM `user` WHERE `excluder`='N'";
     $res=mysqli_query($link,$qry) or die (mysqli_error($link));
     //array for user list
@@ -127,7 +117,7 @@ $ini_array= parse_ini_file("configure.ini");
         $url_array=array();
         $user_list_new=array();
         //array for user list
-           for($x=0;$x<$user_count;$x+=30){
+           for($x=0;$x<$user_count; $x=$x+30){
                $url="https://api.gitter.im/v1/rooms/".$ini_array["CAMPSITE_ID"]."/users?access_token=".$ini_array["API_KEY"]."&skip=".$x;
                $url_array[]=$url;
            }
@@ -137,6 +127,7 @@ $ini_array= parse_ini_file("configure.ini");
         for($i=0;$i<count($result);$i++)
             $user_list_new[]=json_decode($result[$i]);
 
+//var_dump($user_list_new);
          //user updation and insertion
          for($x=0;$x<count($user_list_new);$x++){
              for($y=0;$y<count($user_list_new[$x]);$y++){
@@ -155,7 +146,7 @@ $ini_array= parse_ini_file("configure.ini");
                      //echo $qry."\n";
                    }
                $res=mysqli_query($link,$qry) or die (mysqli_error($link));
-               //echo $qry."\n";
+               echo $qry."\n";
 
              }
          }
