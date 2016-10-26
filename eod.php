@@ -63,7 +63,7 @@ $ini_array= parse_ini_file("configure.ini");
 
     $chunkArray=array_chunk($url_list,10);
 
-    var_dump(count($chunkArray));
+    //var_dump(count($chunkArray));
     $result=array();
     for($i=0;$i<count($chunkArray);$i++){
       echo $i." hi\n";
@@ -72,7 +72,6 @@ $ini_array= parse_ini_file("configure.ini");
       sleep(3);
     }
 
-    var_dump($result);
     for($i=0;$i<count($user_list);$i++){
       $object=json_decode($result[$i], true);
       if(isset($object["about"]["browniePoints"]))
