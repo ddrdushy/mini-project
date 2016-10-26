@@ -15,9 +15,12 @@
     }
     $qry="select `daily_update`.`points` from `daily_update` where `daily_update`.`uid`='".$uid."' and `daily_update`.`r_date`='".date('Y-m-d',strtotime("-1 days"))."'";
     $res=mysqli_query($link,$qry) or die (mysqli_error($link));
+    $oldpts="";
     while($row = mysqli_fetch_array($res, MYSQL_ASSOC)) {
       $oldpts=$row["points"];
     }
+    if($oldpts==null or !$oldpts)
+      $rank_old=0;
     if($oldpts<$points)
       $glyphi="img/up.png";
     else
