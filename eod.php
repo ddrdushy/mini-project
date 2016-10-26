@@ -60,8 +60,19 @@ $ini_array= parse_ini_file("configure.ini");
       $url_list[]=$user_list[$i]->apiurl;
 
     //var_dump($url_list);
-    $result = multiRequest($url_list);
-    //var_dump($result);
+
+    $chunkArray=array_chunk($url_list,10);
+
+    var_dump(count($chunkArray));
+    $result=array();
+    for($i=0;$i<count($chunkArray);$i++){
+      echo $i." hi\n";
+      $temp=multiRequest($chunkArray[$i]);
+      $result = array_merge($result, $temp);
+      sleep(3);
+    }
+
+    var_dump($result);
     for($i=0;$i<count($user_list);$i++){
       $object=json_decode($result[$i], true);
       if(isset($object["about"]["browniePoints"]))
@@ -97,7 +108,7 @@ $ini_array= parse_ini_file("configure.ini");
     $total_points=addUserData($user_list);
     dailyUpdate($total_points,count($user_list));
    //daily update table is updated
-
+   //". date("Y-m-d") ."
    /*$qry="INSERT INTO `daily_count`(`u_date`, `pts_count`, `u_count`) VALUES ('". date("Y-m-d") ."',". $total_points.",".count($user_list).")";
    $res=mysqli_query($link,$qry) or die (mysqli_error($link));*/
    echo $total_points;
@@ -235,7 +246,7 @@ $ini_array= parse_ini_file("configure.ini");
 	  $running = null;
     $count=0;
 	  do {
-      echo $count++."\n";
+    //  echo $count++."\n";
 	    curl_multi_exec($mh, $running);
 	  } while($running > 0);
 
