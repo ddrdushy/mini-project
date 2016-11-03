@@ -79,7 +79,8 @@ function js_array($array)
                       title: 'Time'
                     },
                     yaxis: {
-                      title: 'Total Points'
+                      title: 'Total Points',
+                      exponentformat : 'none'
                     }
                   }
         Plotly.newPlot('myDiv', data,layout);
