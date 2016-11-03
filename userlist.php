@@ -92,10 +92,10 @@ $qry2=mysqli_query($link,$qry) or die (mysqli_error($link));
                       }
                       if($rank_old==null or !$rank_old)
                         $rank_old=0;
-
-                      if($points>$rank_old)
+                        
+                      if($points > $rank_old)
                         $img="img/up.png";
-                      else if($points<$rank_old)
+                      else if($points < $rank_old)
                         $img="img/down.png";
                       else
                         $img="img/equal.png";
