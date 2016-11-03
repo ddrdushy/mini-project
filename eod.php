@@ -117,17 +117,17 @@ $ini_array= parse_ini_file("configure.ini");
         $url_array=array();
         $user_list_new=array();
         //array for user list
-           for($x=0;$x<$user_count; $x=$x+30){
-               $url="https://api.gitter.im/v1/rooms/".$ini_array["CAMPSITE_ID"]."/users?access_token=".$ini_array["API_KEY"]."&skip=".$x;
+           for($x=0;$x<=$user_count+100; $x=$x+100){
+               $url="https://api.gitter.im/v1/rooms/".$ini_array["CAMPSITE_ID"]."/users?access_token=".$ini_array["API_KEY"]."&limit=100&skip=".$x;
                $url_array[]=$url;
            }
-
+        //var_dump($url_array);
         $result=multiRequest($url_array);
 
         for($i=0;$i<count($result);$i++)
             $user_list_new[]=json_decode($result[$i]);
 
-//var_dump($user_list_new);
+          //var_dump($user_list_new);
          //user updation and insertion
          for($x=0;$x<count($user_list_new);$x++){
              for($y=0;$y<count($user_list_new[$x]);$y++){
@@ -142,7 +142,7 @@ $ini_array= parse_ini_file("configure.ini");
                      $qry="INSERT INTO `user`(`uid`, `name`, `doj`, `uname`, `url`) VALUES ('".$user_list_new[$x][$y]->id."','".$user_list_new[$x][$y]->displayName."','". date("Y-m-d") ."','".$user_list_new[$x][$y]->username."','".$user_list_new[$x][$y]->avatarUrlMedium."')";
                      //echo $qry."\n";
                    }else{
-                     $qry ="UPDATE `user` SET `url`='".$user_list_new[$x][$y]->avatarUrlMedium."' WHERE `uid`='".$user_list_new[$x][$y]->id."'";
+                     $qry ="UPDATE `user` SET `url`='".$user_list_new[$x][$y]->avatarUrlMedium."',`name`='".$user_list_new[$x][$y]->displayName."',`uname`='".$user_list_new[$x][$y]->username."' WHERE `uid`='".$user_list_new[$x][$y]->id."'";
                      //echo $qry."\n";
                    }
                $res=mysqli_query($link,$qry) or die (mysqli_error($link));
@@ -236,7 +236,7 @@ $ini_array= parse_ini_file("configure.ini");
 	  $running = null;
     $count=0;
 	  do {
-    //  echo $count++."\n";
+      echo $count++."\n";
 	    curl_multi_exec($mh, $running);
 	  } while($running > 0);
 
@@ -249,48 +249,4 @@ $ini_array= parse_ini_file("configure.ini");
 	  curl_multi_close($mh);
 	  return $result;
 	}
-
-
-
-
-
-
-
-
-
-
-
-/*
-$newuserarray=array();
-$qry="SELECT * FROM `user` WHERE `excluder`='N' ";
-  for($x=0;$x<$user_count;$x+=30){
-      $result=file_get_contents("https://api.gitter.im/v1/rooms/".$ini_array["CAMPSITE_ID"]."/users?access_token=".$ini_array["API_KEY"]."&skip=".$x);
-      echo $x."\n";
-      $user_list[]=json_decode($result);
-  }
-  for($x=0;$x<count($user_list);$x++){
-    echo "x: ".$x."\n";
-    for($y=0;$y<count($user_list[$x]);$y++){
-      echo $user_list[$x][$y]->username."\n";
-      $newuserarray[]=new user($user_list[$x][$y]->id,$user_list[$x][$y]->username,$user_list[$x][$y]->avatarUrlMedium,$user_list[$x][$y]->displayName);
-    }
-  }
-  $user_list_count=count($newuserarray);
-  //echo $newuserarray[0]->name;
-  function cmp($a, $b)
-  {
-      if ($a->points == $b->points) {
-        return 0;
-    }
-    return ($a->points > $b->points) ? -1 : 1;
-  }
-  usort($newuserarray,"cmp");
-  //print_r($newuserarray);
-  echo "\n".$newuserarray[0]->points;
-  for($a=0;$a<count($newuserarray);$a++){
-  //  $qry="INSERT INTO `user`(`uid`, `name`, `doj`, `uname`, `url`) VALUES ('".$newuserarray[$a]->id."','".$newuserarray[$a]->name."','". date("Y-m-d") ."','".$newuserarray[$a]->uname."','".$newuserarray[$a]->img."')";
-    //$res=mysqli_query($link,$qry) or die (mysqli_error($link));
-    echo $res;
-  }
-*/
 ?>
